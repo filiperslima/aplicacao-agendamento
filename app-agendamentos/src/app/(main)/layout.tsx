@@ -1,7 +1,15 @@
+import { SideBar } from "@/components/features/SideBar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+
 export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div>{children}</div>;
+  return (
+    <SidebarProvider>
+      <SideBar />
+      <main>{children}</main>
+    </SidebarProvider>
+  );
 }

@@ -1,9 +1,9 @@
 "use client";
 import { useActionState } from "react";
-import { Button } from "../ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+import { Button } from "../../ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "../../ui/card";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
 import Link from "next/link";
 
 interface PasswordRecoveryFormProp {

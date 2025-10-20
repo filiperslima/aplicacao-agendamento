@@ -1,11 +1,11 @@
 "use client";
 import { Label } from "@radix-ui/react-label";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "../../ui/card";
+import { Input } from "../../ui/input";
+import { Button } from "../../ui/button";
 
 import Image from "next/image";
-import svg from "../../../public/logo.png";
+import svg from "../../../../public/logo.png";
 import Link from "next/link";
 import { useActionState } from "react";
 

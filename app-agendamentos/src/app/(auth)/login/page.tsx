@@ -1,12 +1,5 @@
-import { LoginForm } from "@/components/LoginForm";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TabsContent } from "@radix-ui/react-tabs";
-import { login, register } from "../../actions/auth";
-import { SignUpForm } from "@/components/SignUpForm";
+import { LoginForm } from "@/components/features/LoginForm";
+import { login } from "../../actions/auth";
 
 export default function Login() {
   return <LoginForm onSubmit={login} />;
