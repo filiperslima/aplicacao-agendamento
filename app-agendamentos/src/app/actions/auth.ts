@@ -22,17 +22,21 @@ export async function login(prevState: any, formData: FormData) {
         password: password,
       }),
     });
-    console.log(response);
-    const data = await response.json();
 
+    const data = await response.json();
     console.log(data);
+
     if (data.status != 200) {
       return { error: data.message };
     }
+    return {
+      success: true,
+      message: "Login realizado com sucesso",
+      data: data,
+    };
   } catch (e) {
-    return { error: "Ocorreu um erro ao fazer o login. Tente novamente mais tarde." };
+    return { error: "Ocorreu um erro ao fazer o login. Tente novamente mais tarde.", e };
   }
-  redirect("/home");
 }
 
 export async function register(prevState: any, formData: FormData) {

@@ -8,13 +8,21 @@ import Image from "next/image";
 import { useActionState, useEffect, useState } from "react";
 
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 interface LoginFormProp {
-  onSubmit: (prevState: any, formData: FormData) => Promise<{ error?: string }>;
+  onSubmit: (prevState: any, formData: FormData) => Promise<{ error?: string; success: boolean; data: any }>;
 }
 
 export function LoginForm({ onSubmit }: LoginFormProp) {
   const [state, formAction] = useActionState(onSubmit, null);
+  useEffect(() => {
+    if (state?.success) {
+      sessionStorage.setItem("token", state.data.token);
+      sessionStorage.setItem("id", state.data.id);
+      redirect("/home")
+    }
+  }, [state]);
   return (
     <Card className="max-w-xl mx-auto mt-4">
       <CardHeader className="text-center  flex flex-col items-center">
