@@ -23,7 +23,6 @@ export function ScheduleForm({ eventId, time, date, disabled, variant, duration 
   function handleSubmit(formData: FormData) {
     startTransition(async () => {
       const response = await createSchedule(formData);
-      console.log("ARESPONSEAQUI", response);
       toast(response.message);
 
       if (response?.status === 200) {

@@ -69,3 +69,17 @@ export async function createSchedule(formData: FormData) {
     };
   } catch (e) {}
 }
+
+export async function getSchedules(userId: string) {
+  if (!userId) return { error: "User não logado" };
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/schedules?id=${userId}`);
+    const data = await response.json();
+    return {
+      schedules: data.schedules as ScheduleResult[],
+      message: "Agendamentos carregados com sucesso.",
+    };
+  } catch (e) {
+    console.log(e);
+  }
+}
