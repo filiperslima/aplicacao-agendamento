@@ -1,16 +1,12 @@
+import { Event } from "@/app/actions/event";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { toast } from "sonner";
 
-export function EventCard({
-  event,
-}: {
-  event: {
-    id: string;
-    duration: number;
-    unit: string;
-    name: string;
-    availability: { [key: string]: { active: boolean; startTime: string; endTime: string } };
-  };
-}) {
+interface EventCardProps {
+  event: Event;
+}
+
+export function EventCard({ event }: EventCardProps) {
   return (
     <Card className="border-l-4 border-l-emerald-600 gap-1">
       <CardHeader className="text-2xl font-bold m-0">Evento: {event.name}</CardHeader>
@@ -21,11 +17,22 @@ export function EventCard({
           </div>
           <div>Disponibilidade: {Object.keys(event.availability).join(", ")}</div>
         </div>
-        <div>
-          <a href="" className="text-emerald-600 hover:underline font-medium">
-            Copia link
+        <div className="flex items-center gap-4">
+          <a
+            href={`http://localhost:3000/schedules/${event.id}`}
+            className="text-emerald-600  hover:text-emerald-700 hover:underline font-medium transition-colors"
+          >
+            Ver agenda de evento
           </a>
-          {/* <a href="">xsds</a> */}
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(`http://localhost:3000/schedules/${event.id}`);
+              toast.success("Link copiado!");
+            }}
+            className="text-emerald-600 flex-1 hover:text-emerald-700 hover:underline font-medium cursor-pointer transition-colors"
+          >
+            Copiar link
+          </button>
         </div>
       </CardContent>
     </Card>

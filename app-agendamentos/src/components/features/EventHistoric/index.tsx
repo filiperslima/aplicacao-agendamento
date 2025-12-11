@@ -49,7 +49,7 @@ export function EventHistoric({
   function formatTimeStampToLongDate(date: string) {
     const timestamp = date;
     const data = new Date(timestamp);
-
+    data.setHours(data.getHours() + 3);
     const opcoes: Intl.DateTimeFormatOptions = {
       weekday: "long",
       year: "numeric",
@@ -61,6 +61,7 @@ export function EventHistoric({
 
   function formatTimeStampToTime(date: string) {
     const data = new Date(date);
+    data.setHours(data.getHours() + 3);
     return data.toLocaleTimeString("pt-BR", {
       hour: "2-digit",
       minute: "2-digit",
@@ -80,7 +81,7 @@ export function EventHistoric({
         </ToggleGroup>
       </CardHeader>
       <CardContent className="p-0">
-        {schedule.length === 0 && (
+        {schedule.length === 0 && current.length === 0 && (
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant={"icon"}>
@@ -91,7 +92,7 @@ export function EventHistoric({
             </EmptyHeader>
           </Empty>
         )}
-        {current.length === 0 && (
+        {current.length === 0 && schedule.length > 0 && (
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant={"icon"}>

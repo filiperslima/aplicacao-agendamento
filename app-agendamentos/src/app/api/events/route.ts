@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       duration: body.duration,
       unit: body.unit,
       availability: body.avaliability,
-      id: body.userId,
+      user_id: body.userId,
     });
     console.log(data, dbError);
 

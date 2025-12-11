@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent } from "@/components/ui/card";
 import { getHours } from "@/lib/utils";
-import { format, parse, isSameDay } from "date-fns";
+import { format } from "date-fns";
 
 import { useState } from "react";
 import { ScheduleForm } from "../scheduleForm";
+import { ScheduleResult } from "@/app/actions/schedule";
 
 const WeekMap = {
   Domingo: 0,
@@ -21,33 +22,58 @@ const WeekMap = {
 
 const WeekDayNames = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
 
-export function Schedule({ result }: any) {
+interface ScheduleProps {
+  schedules: ScheduleResult[];
+  event: {
+    created_at: string;
+    duration: number;
+    id: string;
+    name: string;
+    unit: string;
+    user_id: string;
+    availability?: Record<
+      string,
+      {
+        active: boolean;
+        startTime: string;
+        endTime: string;
+      }
+    >;
+  };
+}
+
+export function Schedule({ schedules, event }: ScheduleProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  
-  const unavailableDays: number[] = result?.schedules
-    ? (Object.entries(result.schedules[0].availability)
-        .map(([key, value]) => (!value.active ? WeekMap[key as keyof typeof WeekMap] : null))
-        .filter((v) => v !== null) as number[])
+
+  const schedule = schedules[0];
+  const availability = event.availability;
+  const duration = schedule.duration || 30;
+  const schedulesData = schedules || [];
+  console.log(schedulesData);
+
+  const unavailableDays: number[] = availability
+    ? Object.entries(availability)
+        .map(([key, value]) => (!value?.active ? WeekMap[key as keyof typeof WeekMap] : null))
+        .filter((v): v is number => v !== null)
     : [];
 
-  const availability = result?.schedules?.[0].availability;
-  const duration = result?.schedules?.[0].duration || 30;
-
-  const schedules = result?.schedules || [];
-
   const isTimeBooked = (date: Date, timeStr: string): boolean => {
+    if (!date) return false;
+
     const [hours, minutes] = timeStr.split(":").map(Number);
 
-    const checkDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes, 0, 0));
+    const checkDate = new Date(date);
+    checkDate.setHours(hours, minutes, 0, 0);
 
-    const isBooked = schedules.some((schedule: any) => {
+    return schedulesData.some((schedule: { start: string; end: string }) => {
       const scheduleStart = new Date(schedule.start);
       const scheduleEnd = new Date(schedule.end);
+      scheduleStart.setHours(scheduleStart.getHours() + 3);
+      scheduleEnd.setHours(scheduleEnd.getHours() + 3);
+      console.log("AQUI", scheduleStart, scheduleEnd, checkDate);
 
-      return checkDate.getTime() >= scheduleStart.getTime() && checkDate.getTime() < scheduleEnd.getTime();
+      return checkDate >= scheduleStart && checkDate < scheduleEnd;
     });
-
-    return isBooked;
   };
 
   const getAvailableHours = (date: Date | undefined): string[] => {
@@ -65,10 +91,11 @@ export function Schedule({ result }: any) {
 
     const hours = getHours(dayAvailability.startTime, dayAvailability.endTime, duration);
 
-    return hours.map((h) => format(h, "HH:mm"));
+    return hours.map((hour) => format(hour, "HH:mm"));
   };
 
   const availableHours = getAvailableHours(selectedDate);
+  console.log(availableHours);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
@@ -83,7 +110,7 @@ export function Schedule({ result }: any) {
               numberOfMonths={2}
               classNames={{ months: "flex gap-22 p-8 flex-col md:flex-row relative" }}
               showOutsideDays={false}
-              disabled={[{ dayOfWeek: unavailableDays || [] }, { before: new Date() }]}
+              disabled={[...(unavailableDays.length > 0 ? [{ dayOfWeek: unavailableDays }] : []), { before: new Date() }]}
             />
           </div>
           <div className="flex flex-col min-w-26 gap-6">
@@ -92,16 +119,17 @@ export function Schedule({ result }: any) {
               {availableHours.length > 0 ? (
                 availableHours.map((timeStr) => {
                   const isBooked = isTimeBooked(selectedDate!, timeStr);
+                  console.log(isBooked);
                   return (
                     <ScheduleForm
                       key={timeStr}
                       disabled={isBooked}
                       variant={isBooked ? "outline" : "default"}
-                      eventId={result.id}
-                      time={`${timeStr} ${isBooked ? "(Ocupado)" : ''}`}
+                      eventId={event.id}
+                      time={`${timeStr} ${isBooked ? "(Ocupado)" : ""}`}
                       date={format(selectedDate!, "yyyy-MM-dd")}
                       duration={duration}
-                    ></ScheduleForm>
+                    />
                   );
                 })
               ) : (

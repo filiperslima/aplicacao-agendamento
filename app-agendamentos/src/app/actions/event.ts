@@ -7,6 +7,14 @@ interface Availability {
   };
 }
 
+export interface Event {
+  id: string;
+  name: string;
+  duration: string;
+  unit: string;
+  availability: Availability;
+}
+
 export interface FormState {
   message: string;
   success: boolean;
@@ -21,7 +29,6 @@ export async function createEvent(prevState: FormState, formData: FormData): Pro
   const userId = formData.get("userId") as string;
   let availability: Availability;
 
-  console.log("aqui:",userId)
   try {
     availability = JSON.parse(handleAvailability);
   } catch (error) {
@@ -38,7 +45,7 @@ export async function createEvent(prevState: FormState, formData: FormData): Pro
   const usedDuration = selectedDuration ?? customValue;
   const usedUnit = customValue ?? "minutos";
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/event`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events`, {
     method: "POST",
     body: JSON.stringify({
       name: eventName,
@@ -57,3 +64,46 @@ export async function createEvent(prevState: FormState, formData: FormData): Pro
     success: true,
   };
 }
+
+export async function getEventById(eventId: string) {
+  if (!eventId) return { error: "Não encontrado" };
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/eventId/${eventId}`);
+    const data = await response.json();
+    return {
+      event: data.events?.[0] || {},
+      message: "Evento carregado com sucesso.",
+      success: true,
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      event: {},
+      message: "Erro ao carregar eventos.",
+      success: false,
+    };
+  }
+}
+
+export const fetchData = async (userId: string) => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/userId/${userId}`);
+    if (!response.ok) {
+      console.log(response);
+    }
+    const data = await response.json();
+    console.log(data);
+    return {
+      event: data.events || [],
+      message: "Evento carregado com sucesso.",
+      success: true,
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      event: {},
+      message: "Erro ao carregar eventos.",
+      success: false,
+    };
+  }
+};

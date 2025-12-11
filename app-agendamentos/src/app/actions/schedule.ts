@@ -1,9 +1,8 @@
 "use server";
 
 import { addMinutes, format, parse } from "date-fns";
-import { toast } from "sonner";
 
-interface ScheduleResult {
+export interface ScheduleResult {
   start: string;
   end: string;
   availability: Record<string, { active: boolean; startTime: string; endTime: string }>;
@@ -15,7 +14,7 @@ export async function getScheduleByEvent(event: string) {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/schedules/${event}`);
     const data = await response.json();
     return {
-      schedules: data.schedules as ScheduleResult[],
+      schedules: (data.schedules as ScheduleResult[]) || [],
       message: "Agendamentos carregados com sucesso.",
     };
   } catch (e) {
@@ -76,7 +75,7 @@ export async function getSchedules(userId: string) {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/schedules?id=${userId}`);
     const data = await response.json();
     return {
-      schedules: data.schedules as ScheduleResult[],
+      schedules: (data.schedules as ScheduleResult[]) || [],
       message: "Agendamentos carregados com sucesso.",
     };
   } catch (e) {

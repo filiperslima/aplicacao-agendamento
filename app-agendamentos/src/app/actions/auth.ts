@@ -24,7 +24,6 @@ export async function login(prevState: any, formData: FormData) {
     });
 
     const data = await response.json();
-    console.log(data);
 
     if (data.status != 200) {
       return { error: data.message };
@@ -43,7 +42,6 @@ export async function register(prevState: any, formData: FormData) {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
   const name = formData.get("name")?.toString();
-  console.log(email, password, name);
 
   if (!email || !password || !name) {
     return { error: "Por favor, preencha todos os campos necessários para o registro" };

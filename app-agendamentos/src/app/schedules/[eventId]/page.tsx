@@ -1,5 +1,7 @@
+import { getEventById } from "@/app/actions/event";
 import { getScheduleByEvent } from "@/app/actions/schedule";
-import  {Schedule}  from "@/components/features/schedule";
+import { Schedule } from "@/components/features/schedule";
+import { notFound } from "next/navigation";
 
 interface EventPageProps {
   params: {
@@ -7,8 +9,20 @@ interface EventPageProps {
   };
 }
 export default async function SchedulePage({ params }: EventPageProps) {
-  const { eventId } = ( await params);
-  const result = await getScheduleByEvent(eventId);
+  const { eventId } = await params;
 
-  return <Schedule result={{...result, id: eventId}} />;
+  try {
+    const result = await getScheduleByEvent(eventId);
+    const event = await getEventById(eventId);
+    console.log(event);
+
+    if (!event) {
+      notFound();
+    }
+
+    return <Schedule schedules={result?.schedules || []} event={event.event} />;
+  } catch (e) {
+    console.error("Erro ao buscar dados", e);
+    notFound();
+  }
 }

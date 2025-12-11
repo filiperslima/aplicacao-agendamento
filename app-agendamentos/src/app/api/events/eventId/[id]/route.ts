@@ -1,11 +1,13 @@
 import { createClient } from "@/lib/databases/userSupabase";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest, { params }: { params: { userId: string } }) {
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     const supabase = await createClient();
+    const eventId = (await Promise.resolve(params)).id;
 
-    const { data, error } = await supabase.from("tb_event").select("*").eq("id", params.userId);
+    const { data, error } = await supabase.from("tb_event").select("*").eq("id", eventId);
+    console.log(data, error);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
