@@ -1,5 +1,5 @@
 import { SideBar } from "@/components/features/SideBar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 
 export default function MainLayout({
   children,

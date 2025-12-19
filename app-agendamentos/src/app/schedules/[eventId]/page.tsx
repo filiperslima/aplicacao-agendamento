@@ -1,6 +1,7 @@
 import { getEventById } from "@/app/actions/event";
 import { getScheduleByEvent } from "@/app/actions/schedule";
 import { Schedule } from "@/components/features/schedule";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { notFound } from "next/navigation";
 
 interface EventPageProps {
@@ -20,7 +21,11 @@ export default async function SchedulePage({ params }: EventPageProps) {
       notFound();
     }
 
-    return <Schedule schedules={result?.schedules || []} event={event.event} />;
+    return (
+      <SidebarProvider>
+        <Schedule schedules={result?.schedules || []} event={event.event} />
+      </SidebarProvider>
+    );
   } catch (e) {
     console.error("Erro ao buscar dados", e);
     notFound();

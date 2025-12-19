@@ -9,6 +9,7 @@ import { format } from "date-fns";
 import { useState } from "react";
 import { ScheduleForm } from "../scheduleForm";
 import { ScheduleResult } from "@/app/actions/schedule";
+import { useSidebar } from "@/components/ui/sidebar";
 
 const WeekMap = {
   Domingo: 0,
@@ -44,7 +45,7 @@ interface ScheduleProps {
 
 export function Schedule({ schedules, event }: ScheduleProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-
+  const { isMobile } = useSidebar();
   const schedule = schedules[0];
   const availability = event.availability;
   const duration = schedule.duration || 30;
@@ -98,16 +99,16 @@ export function Schedule({ schedules, event }: ScheduleProps) {
   console.log(availableHours);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
+    <main className="flex min-h-screen flex-col items-center justify-center md:p-24">
       <Card>
-        <CardContent className="flex">
+        <CardContent className="flex flex-col md:flex-row justify-between items-center md:justify-start md:items-stretch gap-6">
           <div className="flex flex-col gap-6 items-center">
-            <span className="w-full text-center">Agende seu horário</span>
+            <span className="w-full text-center font-bold text-2xl">Agende seu horário</span>
             <Calendar
               mode="single"
               selected={selectedDate}
               onSelect={setSelectedDate}
-              numberOfMonths={2}
+              numberOfMonths={isMobile ? 1 : 2}
               classNames={{ months: "flex gap-22 p-8 flex-col md:flex-row relative" }}
               showOutsideDays={false}
               disabled={[...(unavailableDays.length > 0 ? [{ dayOfWeek: unavailableDays }] : []), { before: new Date() }]}

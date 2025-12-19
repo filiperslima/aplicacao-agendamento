@@ -22,7 +22,7 @@ export default function meets() {
   }, []);
 
   return (
-    <div className="w-full p-8 flex flex-col gap-4 max-h-full">
+    <div className="md:w-full p-8 flex flex-col gap-4 max-h-full">
       <div className="w-full flex  flex-col justify-evenly self-end h-1/4">
         <span className="flex justify-between items-center w-full">
           <h1 className="text-3xl font-extrabold">Seus agendamentos</h1>

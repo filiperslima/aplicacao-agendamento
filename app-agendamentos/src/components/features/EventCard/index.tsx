@@ -10,9 +10,9 @@ export function EventCard({ event }: EventCardProps) {
   return (
     <Card className="border-l-4 border-l-emerald-600 gap-1">
       <CardHeader className="text-2xl font-bold m-0">Evento: {event.name}</CardHeader>
-      <CardContent className="w-7xl text-muted-foreground flex items-center justify-between">
-        <div className="w-5xl">
-          <div>
+      <CardContent className="w-full md:w-7xl text-muted-foreground flex flex-col md:flex-row items-center justify-between gap-8">
+        <div className="max-w-screen md:w-5xl py-2">
+          <div className="py-4 font-bold">
             Duração: {event.duration} {event.unit}
           </div>
           <div>Disponibilidade: {Object.keys(event.availability).join(", ")}</div>

@@ -24,16 +24,16 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="w-full p-8 flex flex-col gap-4 h-full">
-      <div className="w-full flex  flex-col justify-evenly self-end h-1/4">
+    <div className="w-full min-h-screen p-6 md:p-8 flex flex-col gap-4 md:h-full">
+      <div className="w-full flex flex-col justify-evenly self-end h-1/4">
         <span className="flex justify-between items-center w-full">
-          <h1 className="text-3xl font-extrabold">Seus eventos</h1>
+          <h1 className="self-start md:self-auto text-xl md:text-3xl font-extrabold">Seus eventos</h1>
           <EventForm onSubmit={createEvent} />
         </span>
-        <span className="flex flex-col gap-4">
+        <span className="flex flex-col gap-8 py-8 md:gap-4">
           <Label>Pesquisar por eventos</Label>
           <Input
-            className="w-1/5"
+            className="w-full md:w-1/5"
             type="text"
             placeholder="Pesquisar"
             value={filter}
@@ -41,10 +41,9 @@ export default function Home() {
           />
         </span>
       </div>
-      <div className="h-1/2 flex flex-col w-7xl">
+      <div className="h-1/2 flex flex-col w-full md:w-7xl gap-6">
         <div className="w-full flex justify-between p-4 mb-4">
           <p>Eventos de Filipe Rodrigues</p>
-          <a href="">Ver página de destino</a>
         </div>
         {events &&
           events?.length > 0 &&

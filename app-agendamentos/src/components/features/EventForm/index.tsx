@@ -7,15 +7,17 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { SwitchDay } from "./SwitchDay";
 import { Input } from "@/components/ui/input";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, PlusCircleIcon } from "lucide-react";
 import { useActionState, useEffect, useState } from "react";
 import { FormState } from "@/app/actions/event";
+import { useSidebar } from "@/components/ui/sidebar";
 
 interface EventFormProps {
   onSubmit: (prevState: any, formData: FormData) => Promise<FormState>;
 }
 
 export function EventForm({ onSubmit }: EventFormProps) {
+  const { isMobile } = useSidebar();
   const [state, formAction] = useActionState(onSubmit, null);
   const [userId, setUserId] = useState<string | null>(null);
 
@@ -46,16 +48,16 @@ export function EventForm({ onSubmit }: EventFormProps) {
 
   return (
     <Dialog>
-      <DialogTrigger>
-        <Button variant="outline">
-          <PlusCircle /> Adicionar um evento
+      <DialogTrigger className="w-1/4">
+        <Button variant="outline" className="w-full sm:w-auto text-xs md:text-base">
+          <PlusCircleIcon /> {isMobile ? null : "Adicionar um evento"}
         </Button>
       </DialogTrigger>
-      <DialogContent className="gap-8 !max-w-4xl max-h-[95vh] overflow-y-auto">
-        <form action={formAction} className="gap-4 flex flex-col">
-          <DialogTitle className="font-bold text-center text-3xl"> Criar evento</DialogTitle>
+      <DialogContent className="gap-8 md:!max-w-4xl max-h-[95vh] overflow-y-auto m-2 md:m-auto">
+        <form action={formAction} className="gap-4 flex flex-col max-w-screen">
+          <DialogTitle className="font-bold text-center text-2xl md:text-3xl my-4"> Criar evento</DialogTitle>
           <DialogDescription>Preencha os campos abaixo para criar um novo evento.</DialogDescription>
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col max-w-[90%] gap-8 md:gap-6">
             <Label htmlFor="event-name">Nome do evento</Label>
             <Input
               id="event-name"
@@ -68,7 +70,7 @@ export function EventForm({ onSubmit }: EventFormProps) {
             <Input type="hidden" name="userId" value={userId ?? ""} />
 
             <Input type="hidden" name="selectedDuration" value={selectedDuration} />
-            <RadioGroup className="flex" onValueChange={(value) => setSelectedDuration(value)}>
+            <RadioGroup className="flex flex-1 flex-col md:flex-row" onValueChange={(value) => setSelectedDuration(value)}>
               {durations.map((duration) => {
                 return (
                   <div className="flex gap-4">

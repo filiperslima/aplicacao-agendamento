@@ -69,7 +69,7 @@ export function EventHistoric({
   }
 
   return (
-    <Card className="rounded-sm">
+    <Card className="rounded-sm max-w-screen md:max-w-full">
       <CardHeader>
         <ToggleGroup type="single">
           <ToggleGroupItem value="next" onClick={() => setPagination((p) => p + 1)} disabled={!hasNext}>
@@ -82,7 +82,7 @@ export function EventHistoric({
       </CardHeader>
       <CardContent className="p-0">
         {schedule.length === 0 && current.length === 0 && (
-          <Empty>
+          <Empty className="max-w-screen md:max-w-full flex flex-col justify-start items-start md:justify-center md:items-center">
             <EmptyHeader>
               <EmptyMedia variant={"icon"}>
                 <CalendarOff />
@@ -93,7 +93,7 @@ export function EventHistoric({
           </Empty>
         )}
         {current.length === 0 && schedule.length > 0 && (
-          <Empty>
+          <Empty className="max-w-screen md:max-w-full flex flex-col justify-start items-start md:justify-center md:items-center">
             <EmptyHeader>
               <EmptyMedia variant={"icon"}>
                 <CalendarOff />
@@ -107,19 +107,19 @@ export function EventHistoric({
         {current.map((item) => {
           return (
             <>
-              <Card className="p-0 rounded-none border-b-0" key={item.id}>
-                <CardHeader className="bg-muted w-full p-4">{formatTimeStampToLongDate(item.start)}</CardHeader>
-                <CardContent className="p-4 flex justify-between  items-center">
+              <Card className="p-0 rounded-none border-b-0 w-[80%] md:max-w-full md:w-full " key={item.id}>
+                <CardHeader className="bg-muted max-w-full p-4">{formatTimeStampToLongDate(item.start)}</CardHeader>
+                <CardContent className="max-w-screen md:max-w-full p-4 flex justify-between items-start md:items-center flex-col md:flex-row">
                   <Item>
                     <ItemHeader>
                       {formatTimeStampToTime(item.start)} - {formatTimeStampToTime(item.end)}
                     </ItemHeader>
                   </Item>
-                  <Item>
+                  <Item className="flex flex-col md:flex-row">
                     <ItemContent>{item.event}</ItemContent>
                     <ItemTitle>{item.email}</ItemTitle>
                   </Item>
-                  <Item>
+                  <Item className="flex flex-col md:flex-row">
                     <ItemContent>{item.event}</ItemContent>
                     <ItemTitle>{item.email}</ItemTitle>
                     <ItemActions>
