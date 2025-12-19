@@ -99,11 +99,11 @@ export function Schedule({ schedules, event }: ScheduleProps) {
   console.log(availableHours);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center md:p-24">
+    <main className="flex min-h-screen w-full flex-col items-center justify-center md:p-24">
       <Card>
         <CardContent className="flex flex-col md:flex-row justify-between items-center md:justify-start md:items-stretch gap-6">
           <div className="flex flex-col gap-6 items-center">
-            <span className="w-full text-center font-bold text-2xl">Agende seu horário</span>
+            <span className="w-full text-center text-2xl font-bold">Agende seu horário</span>
             <Calendar
               mode="single"
               selected={selectedDate}
